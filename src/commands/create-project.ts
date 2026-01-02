@@ -37,7 +37,8 @@ int main() {
 }
 `;
     const cmakeUri = vscode.Uri.joinPath(workspaceFolder.uri, 'CMakeLists.txt');
-    const mainCppUri = vscode.Uri.joinPath(workspaceFolder.uri, 'src/main.cpp');
+    const srcFolderUri = vscode.Uri.joinPath(workspaceFolder.uri, 'src/');
+    const mainCppUri = vscode.Uri.joinPath(srcFolderUri, 'main.cpp');
 
     // Check if files already exist
     try {
@@ -59,7 +60,7 @@ int main() {
     // Files do not exist, proceed with creation
     try {
         await vscode.workspace.fs.writeFile(cmakeUri, Buffer.from(cmakeContent));
-        await vscode.workspace.fs.createDirectory(vscode.Uri.joinPath(workspaceFolder.uri, 'src'));
+        await vscode.workspace.fs.createDirectory(srcFolderUri);
         await vscode.workspace.fs.writeFile(mainCppUri, Buffer.from(mainCppContent));
         vscode.window.showInformationMessage('C++ project created successfully!');
     } catch (err: unknown) {
