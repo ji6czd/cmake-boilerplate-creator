@@ -1,71 +1,46 @@
-# cpp-project-generator README
+# C++ Project Generator
 
-This is the README for your extension "cpp-project-generator". After writing up a brief description, we recommend including the following sections.
+VS Code で新しい C++ プロジェクトの雛形（スキャフォールディング）を簡単に作成するための拡張機能です。
+CMake をベースとした基本的なプロジェクト構造を自動的に生成します。
 
-## Features
+## 機能 (Features)
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+この拡張機能は、以下のファイルとディレクトリ構造を生成します：
 
-For example if there is an image subfolder under your extension project workspace:
+- **CMakeLists.txt**: C++17 標準を使用し、`src` ディレクトリ内のソースファイルを自動的に検出するように設定された CMake 設定ファイル。
+- **src/main.cpp**: "Hello, [ProjectName]!" を出力するシンプルなメインファイル。
 
-\!\[feature X\]\(images/feature-x.png\)
+生成される構造の例:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+``` text
+.
+├── CMakeLists.txt
+└── src
+    └── main.cpp
+```
 
-## Requirements
+## 使い方 (Usage)
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+1. VS Code で空のフォルダ（またはプロジェクトを作成したいフォルダ）を開きます。
+2. コマンドパレットを開きます (`Ctrl+Shift+P` または `Cmd+Shift+P`)。
+3. `Create C++ Project` コマンドを検索して実行します。
+4. プロンプトが表示されたら、プロジェクト名を入力して Enter キーを押します。
 
-## Extension Settings
+## 要件 (Requirements)
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- VS Code 1.107.0 以上
 
-For example:
+## 拡張機能の設定 (Extension Settings)
 
-This extension contributes the following settings:
+現在、この拡張機能には設定項目はありません。
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## 既知の問題 (Known Issues)
 
-## Known Issues
+- 既に `CMakeLists.txt` や `src/main.cpp` が存在する場合、上書きを防ぐためにエラーメッセージを表示して処理を中断します。
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## リリースノート (Release Notes)
 
-## Release Notes
+### 0.0.1
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- 初回リリース
+- 基本的な CMake プロジェクト生成機能の実装

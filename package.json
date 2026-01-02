@@ -2,6 +2,7 @@
   "name": "cpp-project-generator",
   "displayName": "C++ Project Generator",
   "description": "VS Code extension for creating and scaffolding new C++ projects.",
+  "publisher": "seiken-lab",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.107.0"
