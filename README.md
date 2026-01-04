@@ -1,13 +1,14 @@
-# C++ Project Generator
+# C++ Project Generator for Windows developers
 
 VS Code で新しい C++ プロジェクトの雛形（スキャフォールディング）を簡単に作成するための拡張機能です。
-CMake をベースとした基本的なプロジェクト構造を自動的に生成します。
+CMake をベースとした基本的なプロジェクト構造を自動的に生成します。vcpkgを利用する基本的な設定も作成します。
 
 ## 機能 (Features)
 
 この拡張機能は、以下のファイルとディレクトリ構造を生成します：
 
 - **CMakeLists.txt**: C++17 標準を使用し、`src` ディレクトリ内のソースファイルを自動的に検出するように設定された CMake 設定ファイル。
+- **CMakePresets.json**: CMake のビルド設定プリセット。vcpkg ツールチェーンを使用する設定が含まれています。
 - **src/main.cpp**: "Hello, [ProjectName]!" を出力するシンプルなメインファイル。
 
 生成される構造の例:
@@ -15,6 +16,7 @@ CMake をベースとした基本的なプロジェクト構造を自動的に�
 ``` text
 .
 ├── CMakeLists.txt
+├── CMakePresets.json
 └── src
     └── main.cpp
 ```
@@ -25,6 +27,8 @@ CMake をベースとした基本的なプロジェクト構造を自動的に�
 2. コマンドパレットを開きます (`Ctrl+Shift+P` または `Cmd+Shift+P`)。
 3. `Create C++ Project` コマンドを検索して実行します。
 4. プロンプトが表示されたら、プロジェクト名を入力して Enter キーを押します。
+5. vcpkgを利用する場合は環境変数"VCPKG_ROOT"を設定してください。
+6. 必要に応じてvcpkg.jsonを作成して、使用するライブラリを記述します。
 
 ## 要件 (Requirements)
 

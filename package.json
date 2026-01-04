@@ -3,6 +3,10 @@
   "displayName": "C++ Project Generator",
   "description": "VS Code extension for creating and scaffolding new C++ projects.",
   "publisher": "seiken-lab",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ji6czd/cpp-project-generator.git"
+  },  
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.107.0"
