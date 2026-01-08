@@ -16,7 +16,21 @@ export async function createCppProject() {
         value: 'MyCppProject'
     });
 
+    // C++バージョンを選択
+    const cppVersion = await vscode.window.showQuickPick(['11', '14', '17', '20', '23'], {
+        placeHolder: 'Select C++ standard version'
+    });
+
+    // vcpkgを使うかどうかを設定
+    const useVcpkg = await vscode.window.showQuickPick(['Yes', 'No'], {
+        placeHolder: 'Do you want to use vcpkg for dependency management?'
+    });
+
     if (!projectName) {
+        return;
+    }
+
+    if (!cppVersion) {
         return;
     }
 
@@ -55,12 +69,15 @@ export async function createCppProject() {
 
     // Files do not exist, proceed with creation
     try {
-        await vscode.workspace.fs.writeFile(cmakeUri, Buffer.from(getCMakeListsContent(projectName)));
-        await vscode.workspace.fs.writeFile(presetUri, Buffer.from(getCMakePresetsContent()));
+        await vscode.workspace.fs.writeFile(cmakeUri, Buffer.from(getCMakeListsContent(projectName, cppVersion)));
         await vscode.workspace.fs.createDirectory(srcFolderUri);
         await vscode.workspace.fs.writeFile(mainCppUri, Buffer.from(getMainCppContent(projectName)));
-        if (!process.env.VCPKG_ROOT) {
-            vscode.window.showWarningMessage('VCPKG_ROOT environment variable is not set. Make sure to set it for vcpkg integration.');
+        if (useVcpkg === 'Yes') {
+            if (!process.env.VCPKG_ROOT) {
+                vscode.window.showWarningMessage('VCPKG_ROOT environment variable is not set. Make sure to set it for vcpkg integration.');
+            } else {
+                await vscode.workspace.fs.writeFile(presetUri, Buffer.from(getCMakePresetsContent()));
+            }
         }
         vscode.window.showInformationMessage('C++ project created successfully!');
     } catch (err: unknown) {

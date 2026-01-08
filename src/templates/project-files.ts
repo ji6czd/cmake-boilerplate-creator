@@ -1,10 +1,14 @@
-export function getCMakeListsContent(projectName: string): string {
+export function getCMakeListsContent(projectName: string, cppVersion: string): string {
     return `cmake_minimum_required(VERSION 3.20)
 project(${projectName})
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD ${cppVersion})
 
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.cxx")
 add_executable(${projectName} \${SOURCES})
+# Add /utf-8 option only for MSVC
+if(MSVC)
+    target_compile_options(${projectName} PRIVATE "/utf-8")
+endif()
 `;
 }
 
@@ -31,8 +35,6 @@ export function getCMakePresetsContent(): string {
           "value": "${toolchainPath}",
           "type": "FILEPATH"
         },
-        "CMAKE_C_COMPILER": "cl.exe",
-        "CMAKE_CXX_COMPILER": "cl.exe"
       }
     }
   ]
