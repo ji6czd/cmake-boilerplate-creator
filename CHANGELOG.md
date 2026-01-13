@@ -1,9 +1,14 @@
 # Change Log
 
-All notable changes to the "cpp-project-generator" extension will be documented in this file.
+All notable changes to the "cmake-boilerplate-creator" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [0.0.1] - 2026-01-08
 
-## [Unreleased]
+### Added
 
-- Initial release
+- Initial release of CMake Boilerplate Creator.
+- Command `Create CMake Boilerplate for C++ Project` to scaffold a new project.
+- Option to select C++ standard version (11, 14, 17, 20, 23).
+- Option to generate `CMakePresets.json` for vcpkg integration.
+- Automatic creation of `CMakeLists.txt` and `src/main.cpp`.
+

@@ -1,13 +1,13 @@
 {
-  "name": "cpp-project-generator",
-  "displayName": "C++ Project Generator",
-  "description": "VS Code extension for creating and scaffolding new C++ projects.",
+  "name": "cmake-boilerplate-creator",
+  "displayName": "CMake Boilerplate Creator",
+  "description": "VS Code extension for creating and scaffolding C++ projects with CMake and optional vcpkg integration.",
   "publisher": "seiken-lab",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ji6czd/cpp-project-generator.git"
+    "url": "https://github.com/ji6czd/cmake-boilerplate-creator.git"
   },  
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.107.0"
   },
@@ -19,8 +19,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "cpp-project-generator.create-cpp-project",
-        "title": "Create C++ Project"
+        "command": "cmake-boilerplate-creator.create-cmake-boilerplate",
+        "title": "Create CMake Boilerplate for C++ Project",
+        "icon": {
+          "light": "images/icon_small.png",
+          "dark": "images/icon_small.png"
+        }
       }
     ]
   },

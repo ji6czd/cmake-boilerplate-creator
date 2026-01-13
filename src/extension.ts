@@ -5,7 +5,7 @@ import { createCppProject } from './commands/create-project';
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
-		vscode.commands.registerCommand('cpp-project-generator.create-cpp-project', createCppProject)
+		vscode.commands.registerCommand('cmake-boilerplate-creator.create-cmake-boilerplate', createCppProject)
 	);
 }
 

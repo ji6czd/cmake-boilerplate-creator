@@ -34,6 +34,10 @@ export async function createCppProject() {
         return;
     }
 
+    if (!useVcpkg) {
+        return;
+    }
+
     vscode.window.showInformationMessage(`Creating C++ project: ${projectName}`);
 
     const workspaceFolder = vscode.workspace.workspaceFolders[0];
@@ -59,12 +63,14 @@ export async function createCppProject() {
         // File does not exist
     }
 
-    try {
-        await vscode.workspace.fs.stat(presetUri);
-        vscode.window.showErrorMessage('CMakePresets.json already exists!');
-        return;
-    } catch {
-        // File does not exist
+    if (useVcpkg === 'Yes') {
+        try {
+            await vscode.workspace.fs.stat(presetUri);
+            vscode.window.showErrorMessage('CMakePresets.json already exists!');
+            return;
+        } catch {
+            // File does not exist
+        }
     }
 
     // Files do not exist, proceed with creation
@@ -73,10 +79,9 @@ export async function createCppProject() {
         await vscode.workspace.fs.createDirectory(srcFolderUri);
         await vscode.workspace.fs.writeFile(mainCppUri, Buffer.from(getMainCppContent(projectName)));
         if (useVcpkg === 'Yes') {
+            await vscode.workspace.fs.writeFile(presetUri, Buffer.from(getCMakePresetsContent()));
             if (!process.env.VCPKG_ROOT) {
                 vscode.window.showWarningMessage('VCPKG_ROOT environment variable is not set. Make sure to set it for vcpkg integration.');
-            } else {
-                await vscode.workspace.fs.writeFile(presetUri, Buffer.from(getCMakePresetsContent()));
             }
         }
         vscode.window.showInformationMessage('C++ project created successfully!');
