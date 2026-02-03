@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getCMakeListsContent, getCMakePresetsContent, getMainCppContent } from '../templates/project-files';
+import * as projectfile from '../templates/project-files';
 
 /**
  *  Creates a basic C++ project structure with CMakeLists.txt and main.cpp
@@ -43,8 +43,15 @@ export async function createCppProject() {
     const workspaceFolder = vscode.workspace.workspaceFolders[0];
     const cmakeUri = vscode.Uri.joinPath(workspaceFolder.uri, 'CMakeLists.txt');
     const presetUri = vscode.Uri.joinPath(workspaceFolder.uri, 'CMakePresets.json');
+    const appMainCppUri = vscode.Uri.joinPath(workspaceFolder.uri, 'main.cpp');
+    const vcpkgJsonUri = vscode.Uri.joinPath(workspaceFolder.uri, 'vcpkg.json');
     const srcFolderUri = vscode.Uri.joinPath(workspaceFolder.uri, 'src/');
-    const mainCppUri = vscode.Uri.joinPath(srcFolderUri, 'main.cpp');
+    const srcCmakeUri = vscode.Uri.joinPath(srcFolderUri, 'CMakeLists.txt');
+    const srcFuncCppContentUri = vscode.Uri.joinPath(srcFolderUri, 'func.cpp');
+    const srcFuncHContentUri = vscode.Uri.joinPath(srcFolderUri, 'func.h');
+    const testAFOlderUri = vscode.Uri.joinPath(workspaceFolder.uri, 'tests/');
+    const testCmakeUri = vscode.Uri.joinPath(testAFOlderUri, 'CMakeLists.txt');
+    const testFuncCppUri = vscode.Uri.joinPath(testAFOlderUri, 'test_func.cpp');
 
     // Check if files already exist
     try {
@@ -56,7 +63,7 @@ export async function createCppProject() {
     }
 
     try {
-        await vscode.workspace.fs.stat(mainCppUri);
+        await vscode.workspace.fs.stat(appMainCppUri);
         vscode.window.showErrorMessage('main.cpp already exists!');
         return;
     } catch {
@@ -75,16 +82,23 @@ export async function createCppProject() {
 
     // Files do not exist, proceed with creation
     try {
-        await vscode.workspace.fs.writeFile(cmakeUri, Buffer.from(getCMakeListsContent(projectName, cppVersion)));
-        await vscode.workspace.fs.createDirectory(srcFolderUri);
-        await vscode.workspace.fs.writeFile(mainCppUri, Buffer.from(getMainCppContent(projectName)));
+        await vscode.workspace.fs.writeFile(cmakeUri, Buffer.from(projectfile.getCMakeListsContent(projectName, cppVersion)));
+        await vscode.workspace.fs.writeFile(appMainCppUri, Buffer.from(projectfile.getAppMainCppContent(projectName)));
         if (useVcpkg === 'Yes') {
-            await vscode.workspace.fs.writeFile(presetUri, Buffer.from(getCMakePresetsContent()));
+            await vscode.workspace.fs.writeFile(presetUri, Buffer.from(projectfile.getCMakePresetsContent()));
+            await vscode.workspace.fs.writeFile(vcpkgJsonUri, Buffer.from(projectfile.getVcpkgJsonContent(projectName)));
             if (!process.env.VCPKG_ROOT) {
                 vscode.window.showWarningMessage('VCPKG_ROOT environment variable is not set. Make sure to set it for vcpkg integration.');
             }
         }
-        vscode.window.showInformationMessage('C++ project created successfully!');
+        await vscode.workspace.fs.createDirectory(srcFolderUri);
+        await vscode.workspace.fs.writeFile(srcCmakeUri, Buffer.from(projectfile.getSrcCmakeContent()));
+        await vscode.workspace.fs.writeFile(srcFuncCppContentUri, Buffer.from(projectfile.getSrcFuncCppContent()));
+        await vscode.workspace.fs.writeFile(srcFuncHContentUri, Buffer.from(projectfile.getSrcFuncHContent()));
+        await vscode.workspace.fs.createDirectory(testAFOlderUri);
+        await vscode.workspace.fs.writeFile(testCmakeUri, Buffer.from(projectfile.getTestCmakeContent()));
+        await vscode.workspace.fs.writeFile(testFuncCppUri, Buffer.from(projectfile.getTestFuncCppContent()));
+        vscode.window.showInformationMessage('project created successfully!');
     } catch (err: unknown) {
         let message = 'Unknown error';
         if (err instanceof Error) {
