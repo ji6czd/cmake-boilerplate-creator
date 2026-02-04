@@ -7,9 +7,9 @@
     "type": "git",
     "url": "https://github.com/ji6czd/cmake-boilerplate-creator.git"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "engines": {
-    "vscode": "^1.107.0"
+    "vscode": "^1.108.1"
   },
   "categories": [
     "Other"

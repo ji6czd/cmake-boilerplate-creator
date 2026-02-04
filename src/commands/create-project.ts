@@ -25,6 +25,10 @@ export async function createCppProject() {
     const useVcpkg = await vscode.window.showQuickPick(['Yes', 'No'], {
         placeHolder: 'Do you want to use vcpkg for dependency management?'
     });
+    // Catch2を使うかどうかを設定
+    const useCatch2 = await vscode.window.showQuickPick(['Yes', 'No'], {
+        placeHolder: 'Do you want to include Catch2 for unit testing?'
+    });
 
     if (!projectName) {
         return;
@@ -35,6 +39,10 @@ export async function createCppProject() {
     }
 
     if (!useVcpkg) {
+        return;
+    }
+
+    if (!useCatch2) {
         return;
     }
 
@@ -82,7 +90,21 @@ export async function createCppProject() {
 
     // Files do not exist, proceed with creation
     try {
-        await vscode.workspace.fs.writeFile(cmakeUri, Buffer.from(projectfile.getCMakeListsContent(projectName, cppVersion)));
+        let cmakeListsBuffer = Buffer.from(projectfile.getCMakeListsContent(projectName, cppVersion));
+        if (useCatch2 !== 'Yes') {
+            // Remove Catch2 related lines
+            const cmakeListsString = cmakeListsBuffer.toString();
+            const modifiedCmakeListsString = cmakeListsString
+                .split('\n')
+                .filter(line => !line.includes('find_package(Catch2 REQUIRED)')
+                    && !line.includes('add_subdirectory(tests)')
+                    && !line.includes('enable_testing()')
+                )
+                .join('\n');
+
+            cmakeListsBuffer = Buffer.from(modifiedCmakeListsString);
+        }
+        await vscode.workspace.fs.writeFile(cmakeUri, cmakeListsBuffer);
         await vscode.workspace.fs.writeFile(appMainCppUri, Buffer.from(projectfile.getAppMainCppContent(projectName)));
         if (useVcpkg === 'Yes') {
             await vscode.workspace.fs.writeFile(presetUri, Buffer.from(projectfile.getCMakePresetsContent()));
@@ -95,9 +117,11 @@ export async function createCppProject() {
         await vscode.workspace.fs.writeFile(srcCmakeUri, Buffer.from(projectfile.getSrcCmakeContent()));
         await vscode.workspace.fs.writeFile(srcFuncCppContentUri, Buffer.from(projectfile.getSrcFuncCppContent()));
         await vscode.workspace.fs.writeFile(srcFuncHContentUri, Buffer.from(projectfile.getSrcFuncHContent()));
-        await vscode.workspace.fs.createDirectory(testAFOlderUri);
-        await vscode.workspace.fs.writeFile(testCmakeUri, Buffer.from(projectfile.getTestCmakeContent()));
-        await vscode.workspace.fs.writeFile(testFuncCppUri, Buffer.from(projectfile.getTestFuncCppContent()));
+        if (useCatch2 === 'Yes') {
+            await vscode.workspace.fs.createDirectory(testAFOlderUri);
+            await vscode.workspace.fs.writeFile(testCmakeUri, Buffer.from(projectfile.getTestCmakeContent()));
+            await vscode.workspace.fs.writeFile(testFuncCppUri, Buffer.from(projectfile.getTestFuncCppContent()));
+        }
         vscode.window.showInformationMessage('project created successfully!');
     } catch (err: unknown) {
         let message = 'Unknown error';

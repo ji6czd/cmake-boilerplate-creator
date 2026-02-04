@@ -39,7 +39,8 @@ CMake、vcpkg、Catch2 (テスト) をベースとしたモダンなプロジェ
 4. プロンプトが表示されたら、プロジェクト名を入力して Enter キーを押します。
 5. 使用する C++ のバージョン (11, 14, 17, 20, 23) を選択します。
 6. 依存関係の管理に vcpkg を使用するかどうかを選択します。
-7. vcpkgを利用する場合は環境変数 `VCPKG_ROOT` を設定してください。
+7. 単体テストにCatch2を使用するかどうかを選択します。
+8. vcpkgを利用する場合は環境変数 `VCPKG_ROOT` を設定してください。
 
 ## 前提条件 (Prerequisites)
 
@@ -111,7 +112,8 @@ Example of generated structure:
 4. When prompted, enter the project name and press Enter.
 5. Select the C++ version to use (11, 14, 17, 20, 23).
 6. Choose whether to use vcpkg for dependency management.
-7. If using vcpkg, please set the environment variable `VCPKG_ROOT`.
+7. Choose whether to use Catch2 for unit testing.
+8. If using vcpkg, please set the environment variable `VCPKG_ROOT`.
 
 ## Prerequisites
 

@@ -2,6 +2,12 @@
 
 All notable changes to the "cmake-boilerplate-creator" extension will be documented in this file.
 
+## [0.1.1] - 2026-02-04
+
+### Added
+
+- Added option to choose whether to use Catch2 testing framework.
+
 ## [0.1.0] - 2026-02-03
 
 ### Added
@@ -17,4 +23,3 @@ All notable changes to the "cmake-boilerplate-creator" extension will be documen
 - Option to select C++ standard version (11, 14, 17, 20, 23).
 - Option to generate `CMakePresets.json` for vcpkg integration.
 - Automatic creation of `CMakeLists.txt` and `src/main.cpp`.
-
